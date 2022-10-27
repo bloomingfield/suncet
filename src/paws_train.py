@@ -46,7 +46,7 @@ from src.data_manager import (
 from src.sgd import SGD
 from src.lars import LARS
 
-import apex
+# import apex
 from torch.nn.parallel import DistributedDataParallel
 
 # --
@@ -153,9 +153,9 @@ def main(args):
         model_name=model_name,
         use_pred=use_pred_head,
         output_dim=output_dim)
-    if world_size > 1:
-        process_group = apex.parallel.create_syncbn_process_group(0)
-        encoder = apex.parallel.convert_syncbn_model(encoder, process_group=process_group)
+    # if world_size > 1:
+    #     process_group = apex.parallel.create_syncbn_process_group(0)
+    #     encoder = apex.parallel.convert_syncbn_model(encoder, process_group=process_group)
 
     # -- init losses
     paws = init_paws_loss(

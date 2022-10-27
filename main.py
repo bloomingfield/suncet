@@ -8,6 +8,7 @@
 import argparse
 
 import torch.multiprocessing as mp
+from pathlib import Path
 
 import pprint
 import yaml
@@ -71,6 +72,7 @@ def process_main(rank, sel, fname, world_size, devices):
             pp.pprint(params)
 
     if rank == 0:
+        Path(params['logging']['folder']).mkdir(parents=True, exist_ok=True)
         dump = os.path.join(params['logging']['folder'], f'params-{sel}.yaml')
         with open(dump, 'w') as f:
             yaml.dump(params, f)
