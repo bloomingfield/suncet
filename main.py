@@ -27,12 +27,13 @@ from pdb import set_trace as pb
 
 
 # python snn_eval.py \
-#   --model-name wide_resnet28w2 \
-#   --pretrained log/cifar10/paws-best.pth.tar \
+#   --model-name resnet18 \
+#   --pretrained log/cifar10_resnet18/paws-best.pth.tar \
 #   --root-path datasets \
 #   --image-folder cifar10-data \
 #   --dataset-name cifar10_fine_tune \
-#   --split-seed 1
+#   --split-seed 152 \
+#   --unlabeled-frac 0.995
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

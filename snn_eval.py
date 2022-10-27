@@ -34,6 +34,7 @@ parser.add_argument(
     help='model architecture',
     default='resnet50',
     choices=[
+        'resnet18',
         'resnet50',
         'resnet50w2',
         'resnet50w4',
@@ -297,6 +298,9 @@ def init_model(
             hidden_dim *= 2
         elif 'w4' in model_name:
             hidden_dim *= 4
+        if 'resnet18' == model_name:
+            hidden_dim = 512
+            
     output_dim = hidden_dim if output_dim is None else output_dim
 
     # -- projection head
