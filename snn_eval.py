@@ -45,7 +45,7 @@ parser.add_argument(
     help='path to pretrained model',
     default='')
 parser.add_argument(
-    '--split-seed', type=float,
+    '--split-seed', type=int,
     default=152,
     help='seed for labeled data-split')
 parser.add_argument(
@@ -300,7 +300,7 @@ def init_model(
             hidden_dim *= 4
         if 'resnet18' == model_name:
             hidden_dim = 512
-            
+
     output_dim = hidden_dim if output_dim is None else output_dim
 
     # -- projection head

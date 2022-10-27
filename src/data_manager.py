@@ -24,6 +24,8 @@ from PIL import Image
 from PIL import ImageFilter
 from PIL import ImageOps
 
+from pdb import set_trace as pb
+
 _GLOBAL_SEED = 0
 logger = getLogger()
 NUM_WORKERS = 6 # 6
@@ -525,6 +527,7 @@ def _make_cifar10_transforms(
         """ Transforms applied to dataset at the start of training """
         new_targets, new_samples = [], []
         if training and (keep_file is not None):
+            # pb()
             assert os.path.exists(keep_file), 'keep file does not exist'
             logger.info(f'Using {keep_file}')
             with open(keep_file, 'r') as rfile:

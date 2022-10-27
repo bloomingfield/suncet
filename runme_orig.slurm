@@ -18,3 +18,14 @@ module load pytorch/1.9.0-python-3.8.6
 python main.py \
   --sel paws_train \
   --fname configs/paws/cifar10_train.yaml
+
+
+python snn_eval.py \
+  --model-name wide_resnet28w2 \
+  --pretrained log/cifar10/paws-best.pth.tar \
+  --root-path datasets \
+  --image-folder cifar10-data \
+  --dataset-name cifar10_fine_tune \
+  --split-seed 152 \
+  --unlabeled-frac 0.92 \
+  --subset-path 'cifar10_subsets/'
