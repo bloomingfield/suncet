@@ -172,7 +172,7 @@ def _init_cifar10_ft_data(
             batch_size=batch_size,
             drop_last=drop_last,
             pin_memory=True,
-            num_workers=8)
+            num_workers=6)
     else:
         dist_sampler = ClassStratifiedSampler(
             data_source=dataset,
@@ -186,7 +186,7 @@ def _init_cifar10_ft_data(
             dataset,
             batch_sampler=dist_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=6)
 
     return (data_loader, dist_sampler)
 
@@ -226,7 +226,7 @@ def _init_cifar10_data(
         batch_size=u_batch_size,
         drop_last=True,
         pin_memory=True,
-        num_workers=8)
+        num_workers=6)
 
     supervised_sampler, supervised_loader = None, None
     if classes_per_batch > 0 and s_batch_size > 0:
@@ -249,7 +249,7 @@ def _init_cifar10_data(
         supervised_loader = torch.utils.data.DataLoader(
             supervised_set,
             batch_sampler=supervised_sampler,
-            num_workers=8)
+            num_workers=6)
         if len(supervised_loader) > 0:
             tmp = ceil(len(unsupervised_loader) / len(supervised_loader))
             supervised_sampler.set_inner_epochs(tmp)
@@ -302,7 +302,7 @@ def _init_imgnt_ft_data(
             batch_size=batch_size,
             drop_last=drop_last,
             pin_memory=True,
-            num_workers=8)
+            num_workers=6)
     else:
         dist_sampler = ClassStratifiedSampler(
             data_source=dataset,
@@ -316,7 +316,7 @@ def _init_imgnt_ft_data(
             dataset,
             batch_sampler=dist_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=6)
 
     return (data_loader, dist_sampler)
 
@@ -364,7 +364,7 @@ def _init_imgnt_data(
         batch_size=u_batch_size,
         drop_last=True,
         pin_memory=True,
-        num_workers=8)
+        num_workers=6)
     logger.info('ImageNet unsupervised data loader created')
 
     supervised_sampler, supervised_loader = None, None
@@ -388,7 +388,7 @@ def _init_imgnt_data(
             supervised_set,
             batch_sampler=supervised_sampler,
             pin_memory=True,
-            num_workers=8)
+            num_workers=6)
         if len(supervised_loader) > 0:
             tmp = ceil(len(unsupervised_loader) / len(supervised_loader))
             supervised_sampler.set_inner_epochs(tmp)
