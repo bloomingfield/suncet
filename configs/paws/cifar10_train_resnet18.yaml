@@ -22,7 +22,7 @@ logging:
   folder: log/cifar10_resnet18
   write_tag: paws
 meta:
-  copy_data: true
+  copy_data: false
   device: cuda:0
   load_checkpoint: false
   model_name: resnet18

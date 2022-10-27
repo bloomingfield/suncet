@@ -22,7 +22,7 @@ logging:
   folder: log/cifar10
   write_tag: paws
 meta:
-  copy_data: true
+  copy_data: false
   device: cuda:0
   load_checkpoint: false
   model_name: wide_resnet28w2
