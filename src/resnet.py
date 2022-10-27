@@ -272,7 +272,6 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
-        pb()
         if self.fc is not None:
             x = self.fc(x)
         return x
