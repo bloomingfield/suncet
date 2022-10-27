@@ -6,7 +6,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=6
 #SBATCH --time=23:59:59
-#SBATCH --output runme_resnet182.out
+#SBATCH --output runme_resnet18.out
 #SBATCH --open-mode=truncate
 #SBATCH --job-name=runme
 #SBATCH --mail-type=ALL
