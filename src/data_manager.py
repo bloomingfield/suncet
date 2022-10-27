@@ -1015,7 +1015,7 @@ class TransCIFAR10(torchvision.datasets.CIFAR10):
             data_path = os.path.join(root, image_folder)
         logger.info(f'data-path {data_path}')
 
-        super().__init__(data_path, train, transform, target_transform, False)
+        super().__init__(data_path, train, transform, target_transform, True)
 
         self.supervised_views = supervised_views
         self.multicrop_transform = multicrop_transform

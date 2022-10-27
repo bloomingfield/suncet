@@ -19,7 +19,7 @@ data:
   unique_classes_per_rank: false
   unlabeled_frac: 0.92
 logging:
-  folder: /path_to_save_models_and_logs/
+  folder: log/cifar10
   write_tag: paws
 meta:
   copy_data: true

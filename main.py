@@ -19,6 +19,19 @@ from src.snn_fine_tune import main as snn_fine_tune
 
 from src.utils import init_distributed
 
+# python main.py \
+#   --sel paws_train \
+#   --fname configs/paws/cifar10_train.yaml
+
+
+python snn_eval.py \
+  --model-name wide_resnet28w2 \
+  --pretrained log/cifar10/paws-best.pth.tar \
+  --root-path datasets \
+  --image-folder cifar10-data \
+  --dataset-name cifar10_fine_tune \
+  --split-seed 1
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--fname', type=str,
