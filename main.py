@@ -19,6 +19,7 @@ from src.fine_tune import main as fine_tune
 from src.snn_fine_tune import main as snn_fine_tune
 
 from src.utils import init_distributed
+from pdb import set_trace as pb
 
 # python main.py \
 #   --sel paws_train \
@@ -102,7 +103,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     num_gpus = len(args.devices)
-    mp.spawn(
-        process_main,
-        nprocs=num_gpus,
-        args=(args.sel, args.fname, num_gpus, args.devices))
+    process_main(0, args.sel, args.fname, num_gpus, args.devices)
+    # mp.spawn(
+    #     process_main,
+    #     nprocs=num_gpus,
+    #     args=(args.sel, args.fname, num_gpus, args.devices))

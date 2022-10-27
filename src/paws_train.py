@@ -426,6 +426,8 @@ def init_model(
             hidden_dim *= 2
         elif 'w4' in model_name:
             hidden_dim *= 4
+        if model_name == 'resnet18':
+            hidden_dim = 512
 
     # -- projection head
     encoder.fc = torch.nn.Sequential(OrderedDict([
