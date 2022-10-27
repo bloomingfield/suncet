@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --partition shortgpgpu
+#SBATCH --partition gpgpu
 #SBATCH --qos=gpgpuresplat
 
 #SBATCH --gres=gpu:1
 #SBATCH --nodes=1
 #SBATCH --ntasks=6
-#SBATCH --time=00:59:59
-#SBATCH --output runme_orig.out
+#SBATCH --time=23:59:59
+#SBATCH --output runme_orig2.out
 #SBATCH --open-mode=truncate
 #SBATCH --job-name=runme
 #SBATCH --mail-type=ALL
