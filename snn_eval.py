@@ -21,6 +21,8 @@ from src.data_manager import (
     make_transforms
 )
 
+from pdb import set_trace as pb
+
 logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -113,6 +115,7 @@ def main(
     device = torch.device(device_str)
     torch.cuda.set_device(device)
     num_classes = 1000 if 'imagenet' in dataset_name else 10
+    # pb()
 
     def init_pipe(training):
         # -- make data transforms
@@ -157,6 +160,7 @@ def main(
     encoder.eval()
 
     transform, init_transform, data_loader, data_sampler = init_pipe(True)
+    # pb()
     embs, labs = make_embeddings(
         device,
         data_loader,
@@ -184,6 +188,7 @@ def evaluate_embeddings(
     temp=0.1,
 ):
     ipe = len(data_loader)
+    # pb()
 
     embs = embs.to(device)
     labs = labs.to(device)

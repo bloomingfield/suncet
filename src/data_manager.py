@@ -453,6 +453,10 @@ def make_transforms(
         if subset_path is not None:
             if unlabeled_frac == 0.92:
                 keep_file = os.path.join(subset_path, f'spc.4000_split.{split_seed}.txt')
+            elif unlabeled_frac == 0.995:
+                keep_file = os.path.join(subset_path, f'spc.250_split.{split_seed}.txt')
+            elif unlabeled_frac == 0.9992:
+                keep_file = os.path.join(subset_path, f'spc.40_split.{split_seed}.txt')
             logger.info(f'keep file: {keep_file}')
 
         return _make_cifar10_transforms(
@@ -537,6 +541,7 @@ def _make_cifar10_transforms(
                     new_samples.append(samples[indx])
         else:
             new_targets, new_samples = targets, samples
+        # pb()
         return np.array(new_targets), np.array(new_samples)
 
     return transform, init_transform
