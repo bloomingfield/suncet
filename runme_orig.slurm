@@ -1,6 +1,7 @@
 #!/bin/bash
-#SBATCH --partition gpgpu
-#SBATCH --qos=gpgpuresplat
+#SBATCH --partition gpu-a100
+# #SBATCH --partition gpgpu
+# #SBATCH --qos=gpgpuresplat
 
 #SBATCH --gres=gpu:1
 #SBATCH --nodes=1
@@ -8,7 +9,7 @@
 #SBATCH --time=23:59:59
 #SBATCH --output runme_orig.out
 #SBATCH --open-mode=truncate
-#SBATCH --job-name=runme
+#SBATCH --job-name=runme_orig
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=nathaniel.bloomfield@unimelb.edu.au
 
