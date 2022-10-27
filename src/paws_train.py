@@ -21,6 +21,8 @@ import logging
 import sys
 from collections import OrderedDict
 
+from pdb import set_trace as pb
+
 import numpy as np
 
 import torch
@@ -269,6 +271,7 @@ def main(args):
                 uimgs = [u.to(device, non_blocking=True) for u in udata[:-1]]
                 # -- supervised imgs
                 global iter_supervised
+                # pb()
                 try:
                     sdata = next(iter_supervised)
                 except Exception:
@@ -281,6 +284,7 @@ def main(args):
                 # -- concatenate supervised imgs and unsupervised imgs
                 imgs = simgs + uimgs
                 return imgs, labels
+            # pb()
             (imgs, labels), dtime = gpu_timer(load_imgs)
             data_meter.update(dtime)
 
