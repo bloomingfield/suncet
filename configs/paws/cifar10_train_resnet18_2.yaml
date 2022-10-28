@@ -1,0 +1,41 @@
+criterion:
+  classes_per_batch: 10
+  me_max: true
+  sharpen: 0.25
+  supervised_imgs_per_class: 16
+  supervised_views: 2
+  temperature: 0.1
+  unsupervised_batch_size: 256
+data:
+  color_jitter_strength: 0.5
+  data_seed: 152
+  dataset: cifar10
+  image_folder: cifar10-data/
+  label_smoothing: 0.1
+  multicrop: 6
+  normalize: true
+  root_path: datasets/
+  subset_path: cifar10_subsets/
+  unique_classes_per_rank: false
+  unlabeled_frac: 0.995
+logging:
+  folder: log/cifar10_resnet18_2
+  write_tag: paws
+meta:
+  copy_data: false
+  device: cuda:0
+  load_checkpoint: false
+  model_name: resnet18
+  output_dim: 512
+  read_checkpoint: null
+  use_fp16: true
+  use_pred_head: true
+optimization:
+  epochs: 600
+  final_lr: 0.064
+  lr: 6.4
+  momentum: 0.9
+  nesterov: false
+  start_lr: 0.3
+  warmup: 10
+  weight_decay: 1.0e-06
