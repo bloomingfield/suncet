@@ -20,6 +20,7 @@ from src.snn_fine_tune import main as snn_fine_tune
 
 from src.utils import init_distributed
 from pdb import set_trace as pb
+import torch
 
 # python main.py \
 #   --sel paws_train \
@@ -102,6 +103,8 @@ def process_main(rank, sel, fname, world_size, devices):
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    
+    # torch.set_default_dtype(torch.float64)
 
     num_gpus = len(args.devices)
     process_main(0, args.sel, args.fname, num_gpus, args.devices)

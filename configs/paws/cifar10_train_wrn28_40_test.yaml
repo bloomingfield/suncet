@@ -28,7 +28,7 @@ meta:
   model_name: wide_resnet28w2
   output_dim: 128
   read_checkpoint: null
-  use_fp16: true
+  use_fp16: false
   use_pred_head: false
 optimization:
   epochs: 600

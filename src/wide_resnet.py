@@ -12,6 +12,7 @@ import torch.nn.functional as F
 __all__ = [
     'wide_resnet28w2'
 ]
+from pdb import set_trace as pb
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -53,7 +54,7 @@ class WideResNet(nn.Module):
         self,
         depth,
         widen_factor,
-        dropout_rate=0.3
+        dropout_rate=0.0
     ):
         super(WideResNet, self).__init__()
 

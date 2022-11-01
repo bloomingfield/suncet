@@ -164,12 +164,14 @@ def main(args):
         if isinstance(m, nn.Conv2d):
             # nn.init.ones_(m.weight)
             nn.init.constant_(m.weight, 0.01)
+            nn.init.constant_(m.bias, 0.00)
             # nn.init.dirac_(m.weight)
             # pb()
         elif isinstance(m, nn.Linear):
             # nn.init.ones_(m.weight)
             # nn.init.constant_(m.weight, 0.01)
             nn.init.eye_(m.weight)
+            nn.init.constant_(m.bias, 0.00)
 
     # -- init losses
     paws = init_paws_loss(
