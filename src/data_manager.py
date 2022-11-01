@@ -520,6 +520,10 @@ def _make_cifar10_transforms(
             [transforms.CenterCrop(size=32),
              transforms.ToTensor()])
 
+    transform = transforms.Compose(
+            [transforms.CenterCrop(size=32),
+             transforms.ToTensor()])
+
     if normalize:
         transform = transforms.Compose(
             [transform,
@@ -534,14 +538,18 @@ def _make_cifar10_transforms(
             # pb()
             assert os.path.exists(keep_file), 'keep file does not exist'
             logger.info(f'Using {keep_file}')
+            indx_list = []
             with open(keep_file, 'r') as rfile:
                 for line in rfile:
                     indx = int(line.split('\n')[0])
-                    new_targets.append(targets[indx])
-                    new_samples.append(samples[indx])
+                    indx_list.append(indx)
+
+            indx_list = np.array(indx_list).astype(int)
+            indx_list.sort()
+            new_targets = np.array(targets)[indx_list]
+            new_samples = samples[indx_list]
         else:
             new_targets, new_samples = targets, samples
-        # pb()
         return np.array(new_targets), np.array(new_samples)
 
     return transform, init_transform
@@ -688,6 +696,10 @@ def _make_multicrop_cifar10_transforms(
          transforms.RandomHorizontalFlip(),
          get_color_distortion(s=color_distortion),
          transforms.ToTensor()])
+
+    transform = transforms.Compose(
+            [transforms.CenterCrop(size=32),
+             transforms.ToTensor()])
 
     if normalize:
         transform = transforms.Compose(

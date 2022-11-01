@@ -26,6 +26,7 @@ from pdb import set_trace as pb
 import numpy as np
 
 import torch
+from torch import nn
 
 import src.resnet as resnet
 import src.wide_resnet as wide_resnet
@@ -64,7 +65,7 @@ torch.backends.cudnn.benchmark = True
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger()
-
+from pdb import set_trace as pb
 
 def main(args):
 
@@ -158,6 +159,17 @@ def main(args):
     # if world_size > 1:
     #     process_group = apex.parallel.create_syncbn_process_group(0)
     #     encoder = apex.parallel.convert_syncbn_model(encoder, process_group=process_group)
+
+    for m in encoder.modules():
+        if isinstance(m, nn.Conv2d):
+            # nn.init.ones_(m.weight)
+            nn.init.constant_(m.weight, 0.01)
+            # nn.init.dirac_(m.weight)
+            # pb()
+        elif isinstance(m, nn.Linear):
+            # nn.init.ones_(m.weight)
+            # nn.init.constant_(m.weight, 0.01)
+            nn.init.eye_(m.weight)
 
     # -- init losses
     paws = init_paws_loss(
@@ -328,6 +340,7 @@ def main(args):
                             target_views=target_views,
                             target_supports=target_supports,
                             target_support_labels=labels)
+                        pb()
                         loss = ploss + me_max
 
                 scaler.scale(loss).backward()
