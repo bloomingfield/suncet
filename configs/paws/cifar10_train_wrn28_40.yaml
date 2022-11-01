@@ -2,7 +2,7 @@ criterion:
   classes_per_batch: 10
   me_max: true
   sharpen: 0.25
-  supervised_imgs_per_class: 16
+  supervised_imgs_per_class: 4
   supervised_views: 2
   temperature: 0.1
   unsupervised_batch_size: 256
