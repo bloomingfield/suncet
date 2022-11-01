@@ -18,7 +18,7 @@ module load pytorch/1.9.0-python-3.8.6
 
 python main.py \
   --sel paws_train \
-  --fname configs/paws/cifar10_train_wrn28.yaml
+  --fname configs/paws/cifar10_train_wrn28_40.yaml
 
 
 python snn_eval.py \
