@@ -36,6 +36,7 @@ def transform_seed(x, seed=False):
     torch.manual_seed(0)
     np.random.seed(0)
     random.seed(0)
+    torch.cuda.manual_seed_all(0)
     return x
 
 
@@ -259,6 +260,7 @@ def _init_cifar10_data(
             seed=_GLOBAL_SEED)
         supervised_loader = torch.utils.data.DataLoader(
             supervised_set,
+            pin_memory=True,
             batch_sampler=supervised_sampler,
             num_workers=NUM_WORKERS)
         if len(supervised_loader) > 0:

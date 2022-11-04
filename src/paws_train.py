@@ -335,10 +335,13 @@ def main(args):
                             target_support_labels=labels)
                         loss = ploss + me_max
                     end = time.time()
-                    torch.set_printoptions(precision=10)
+                    torch.set_printoptions(precision=16)
                     pb()
                     print(end-start)
 
+                # loss.backward()
+                # optimizer.step()
+                # lr_stats = None
                 scaler.scale(loss).backward()
                 lr_stats = scaler.step(optimizer)
                 scaler.update()
