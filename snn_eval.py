@@ -333,7 +333,7 @@ def init_model(
 
     encoder.to(device)
     encoder = load_pretrained(encoder=encoder, pretrained=pretrained)
-
+    pb()
     return encoder
 
 

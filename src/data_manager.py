@@ -31,6 +31,13 @@ logger = getLogger()
 NUM_WORKERS = 6 # 6
 
 
+def transform_seed(x, seed=False):
+    torch.manual_seed(0)
+    np.random.seed(0)
+    random.seed(0)
+    return x
+
+
 def init_data(
     dataset_name,
     transform,
@@ -506,12 +513,16 @@ def _make_cifar10_transforms(
     if training and (not force_center_crop):
         if basic:
             transform = transforms.Compose(
-                [transforms.CenterCrop(size=32),
+                [
+                 transform_seed(),
+                 transforms.CenterCrop(size=32),
                  transforms.RandomHorizontalFlip(),
                  transforms.ToTensor()])
         else:
             transform = transforms.Compose(
-                [transforms.RandomResizedCrop(size=32, scale=scale),
+                [
+                 transform_seed(),
+                 transforms.RandomResizedCrop(size=32, scale=scale),
                  transforms.RandomHorizontalFlip(),
                  get_color_distortion(s=color_distortion),
                  transforms.ToTensor()])
@@ -534,11 +545,16 @@ def _make_cifar10_transforms(
             # pb()
             assert os.path.exists(keep_file), 'keep file does not exist'
             logger.info(f'Using {keep_file}')
+            indx_list = []
             with open(keep_file, 'r') as rfile:
                 for line in rfile:
                     indx = int(line.split('\n')[0])
-                    new_targets.append(targets[indx])
-                    new_samples.append(samples[indx])
+                   indx_list.append(indx)
+
+            indx_list = np.array(indx_list).astype(int)
+            indx_list.sort()
+            new_targets = np.array(targets)[indx_list]
+            new_samples = samples[indx_list]
         else:
             new_targets, new_samples = targets, samples
         # pb()
@@ -684,7 +700,9 @@ def _make_multicrop_cifar10_transforms(
         return color_distort
 
     transform = transforms.Compose(
-        [transforms.RandomResizedCrop(size=size, scale=scale),
+        [
+         transform_seed(),
+         transforms.RandomResizedCrop(size=size, scale=scale),
          transforms.RandomHorizontalFlip(),
          get_color_distortion(s=color_distortion),
          transforms.ToTensor()])

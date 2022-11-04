@@ -56,6 +56,10 @@ class WideResNet(nn.Module):
         dropout_rate=0.3
     ):
         super(WideResNet, self).__init__()
+        init_seed = 0
+        torch.manual_seed(init_seed)
+        np.random.seed(init_seed)
+        dropout_rate = 0.0
 
         self.in_planes = 16
         assert ((depth-4) % 6 == 0), 'Wide-resnet depth should be 6n+4'

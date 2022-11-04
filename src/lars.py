@@ -8,7 +8,8 @@
 import torch
 
 from src.utils import AverageMeter
-
+import time
+from pdb import set_trace as pb
 
 class LARS(torch.optim.Optimizer):
 
@@ -51,6 +52,7 @@ class LARS(torch.optim.Optimizer):
         self.optim.add_param_group(param_group)
 
     def step(self):
+        # start = time.time()
         with torch.no_grad():
             stats = AverageMeter()
             weight_decays = []
@@ -84,4 +86,7 @@ class LARS(torch.optim.Optimizer):
         for i, group in enumerate(self.optim.param_groups):
             group['weight_decay'] = weight_decays[i]
 
+        end = time.time()
+        # print(end - start)
+        # pb()
         return stats

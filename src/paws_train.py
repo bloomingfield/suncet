@@ -26,6 +26,7 @@ from pdb import set_trace as pb
 import numpy as np
 
 import torch
+import time
 
 import src.resnet as resnet
 import src.wide_resnet as wide_resnet
@@ -265,7 +266,7 @@ def main(args):
         data_meter = AverageMeter()
 
         for itr, udata in enumerate(unsupervised_loader):
-
+            start = time.time()
             def load_imgs():
                 # -- unsupervised imgs
                 uimgs = [u.to(device, non_blocking=True) for u in udata[:-1]]
@@ -287,7 +288,9 @@ def main(args):
             # pb()
             (imgs, labels), dtime = gpu_timer(load_imgs)
             data_meter.update(dtime)
-
+            end = time.time()
+            print('loadimg')
+            print(end-start)
             def train_step():
                 with torch.cuda.amp.autocast(enabled=use_fp16):
                     optimizer.zero_grad()
@@ -298,6 +301,7 @@ def main(args):
                     # -- If use_pred_head=False, then encoder.pred (prediction
                     #    head) is None, and _forward_head just returns the
                     #    identity, z=h
+                    # start = time.time()
                     h, z = encoder(imgs, return_before_head=True)
 
                     # Compute paws loss in full precision
@@ -329,6 +333,9 @@ def main(args):
                             target_supports=target_supports,
                             target_support_labels=labels)
                         loss = ploss + me_max
+                    end = time.time()
+                    # print(end-start)
+                    # pb()
 
                 scaler.scale(loss).backward()
                 lr_stats = scaler.step(optimizer)
@@ -362,7 +369,10 @@ def main(args):
                                    lr_stats.max))
 
             assert not np.isnan(loss), 'loss is nan'
-
+            end = time.time()
+            print('step time')
+            print(end-start)
+            pb()
         # -- logging/checkpointing
         logger.info('avg. loss %.3f' % loss_meter.avg)
 
