@@ -308,7 +308,8 @@ def main(args):
                     with torch.cuda.amp.autocast(enabled=False):
 
                         # Step 1. convert representations to fp32
-                        h, z = h.float(), z.float()
+                        # h, z = h.float(), z.float()
+                        h, z = h, z
 
                         # Step 2. determine anchor views/supports and their
                         #         corresponding target views/supports
@@ -334,8 +335,9 @@ def main(args):
                             target_support_labels=labels)
                         loss = ploss + me_max
                     end = time.time()
-                    # print(end-start)
-                    # pb()
+                    torch.set_printoptions(precision=10)
+                    pb()
+                    print(end-start)
 
                 scaler.scale(loss).backward()
                 lr_stats = scaler.step(optimizer)
@@ -372,7 +374,6 @@ def main(args):
             end = time.time()
             print('step time')
             print(end-start)
-            pb()
         # -- logging/checkpointing
         logger.info('avg. loss %.3f' % loss_meter.avg)
 

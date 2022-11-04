@@ -12,6 +12,7 @@ import time
 from logging import getLogger
 
 import numpy as np
+import random
 from math import ceil
 
 import torch
@@ -514,14 +515,14 @@ def _make_cifar10_transforms(
         if basic:
             transform = transforms.Compose(
                 [
-                 transform_seed(),
+                 transforms.Lambda(transform_seed),
                  transforms.CenterCrop(size=32),
                  transforms.RandomHorizontalFlip(),
                  transforms.ToTensor()])
         else:
             transform = transforms.Compose(
                 [
-                 transform_seed(),
+                 transforms.Lambda(transform_seed),
                  transforms.RandomResizedCrop(size=32, scale=scale),
                  transforms.RandomHorizontalFlip(),
                  get_color_distortion(s=color_distortion),
@@ -549,7 +550,7 @@ def _make_cifar10_transforms(
             with open(keep_file, 'r') as rfile:
                 for line in rfile:
                     indx = int(line.split('\n')[0])
-                   indx_list.append(indx)
+                    indx_list.append(indx)
 
             indx_list = np.array(indx_list).astype(int)
             indx_list.sort()
@@ -701,7 +702,7 @@ def _make_multicrop_cifar10_transforms(
 
     transform = transforms.Compose(
         [
-         transform_seed(),
+         transforms.Lambda(transform_seed),
          transforms.RandomResizedCrop(size=size, scale=scale),
          transforms.RandomHorizontalFlip(),
          get_color_distortion(s=color_distortion),
