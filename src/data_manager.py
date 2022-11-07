@@ -177,6 +177,7 @@ def _init_cifar10_ft_data(
         dist_sampler = torch.utils.data.distributed.DistributedSampler(
             dataset=dataset,
             num_replicas=world_size,
+            shuffle=False,
             rank=rank)
         data_loader = torch.utils.data.DataLoader(
             dataset,

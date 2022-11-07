@@ -8,6 +8,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import random
 
 import numpy as np
 
@@ -15,6 +16,7 @@ __all__ = [
     'wide_resnet28w2'
 ]
 
+from pdb import set_trace as pb
 
 def conv3x3(in_planes, out_planes, stride=1):
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True)
@@ -61,6 +63,9 @@ class WideResNet(nn.Module):
         init_seed = 0
         torch.manual_seed(init_seed)
         np.random.seed(init_seed)
+        random.seed(init_seed)
+        torch.cuda.manual_seed_all(init_seed)
+
         dropout_rate = 0.0
 
         self.in_planes = 16

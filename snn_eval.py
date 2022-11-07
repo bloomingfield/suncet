@@ -23,6 +23,18 @@ from src.data_manager import (
 
 from pdb import set_trace as pb
 
+
+# python snn_eval.py \
+#   --model-name wide_resnet28w2 \
+#   --pretrained 'False' \
+#   --root-path datasets \
+#   --image-folder cifar10-data \
+#   --dataset-name cifar10_fine_tune \
+#   --split-seed 152 \
+#   --unlabeled-frac 0.9992 \
+#   --subset-path 'cifar10_subsets/'
+
+
 logging.basicConfig()
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -136,7 +148,7 @@ def main(
             transform=transform,
             init_transform=init_transform,
             u_batch_size=None,
-            s_batch_size=16,
+            s_batch_size=32,
             stratify=False,
             classes_per_batch=None,
             world_size=1,
@@ -215,6 +227,7 @@ def evaluate_embeddings(
         top1_correct += float(probs.max(dim=1).indices.eq(labels).sum())
         top1_acc = 100. * top1_correct / total
         top5_acc = 100. * top5_correct / total
+        # pb()
 
         if itr % 50 == 0:
             logger.info('[%5d/%d] %.3f%% %.3f%%' % (itr, ipe, top1_acc, top5_acc))
@@ -332,13 +345,14 @@ def init_model(
         encoder.pred = torch.nn.Sequential(pred_head)
 
     encoder.to(device)
-    encoder = load_pretrained(encoder=encoder, pretrained=pretrained)
-    pb()
+    if pretrained != 'False':
+        encoder = load_pretrained(encoder=encoder, pretrained=pretrained)
     return encoder
 
 
 if __name__ == '__main__':
     global args
+    torch.set_default_dtype(torch.float64)
     args = parser.parse_args()
     pp.pprint(args)
     args.num_classes = 10 if 'cifar10' in args.dataset_name else 1000
