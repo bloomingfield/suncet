@@ -285,7 +285,7 @@ def main(args):
                 # -- concatenate supervised imgs and unsupervised imgs
                 imgs = simgs + uimgs
                 return imgs, labels
-            # pb()
+            
             (imgs, labels), dtime = gpu_timer(load_imgs)
             data_meter.update(dtime)
             end = time.time()

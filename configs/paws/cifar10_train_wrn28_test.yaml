@@ -2,7 +2,7 @@ criterion:
   classes_per_batch: 10
   me_max: true
   sharpen: 0.25
-  supervised_imgs_per_class: 4
+  supervised_imgs_per_class: 6
   supervised_views: 2
   temperature: 0.1
   unsupervised_batch_size: 32
@@ -17,7 +17,7 @@ data:
   root_path: datasets/
   subset_path: cifar10_subsets/
   unique_classes_per_rank: false
-  unlabeled_frac: 0.9992
+  unlabeled_frac: 0.995
 logging:
   folder: log/cifar10_wrn28_test
   write_tag: paws
