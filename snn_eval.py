@@ -198,6 +198,7 @@ def evaluate_embeddings(
     labs = labs.long().view(-1, 1)
     labs = torch.full((labs.size()[0], num_classes), 0., device=device).scatter_(1, labs, 1.)
 
+    # pb()
     snn = make_snn(embs, labs, temp)
 
     logger.info(embs.shape)

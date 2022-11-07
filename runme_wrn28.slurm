@@ -1,15 +1,15 @@
 #!/bin/bash
-#SBATCH --partition gpu-a100
-# #SBATCH --partition gpgpu
-# #SBATCH --qos=gpgpuresplat
+# #SBATCH --partition gpu-a100
+#SBATCH --partition gpgpu
+#SBATCH --qos=gpgpuresplat
 
 #SBATCH --gres=gpu:1
 #SBATCH --nodes=1
 #SBATCH --ntasks=6
 #SBATCH --time=23:59:59
-#SBATCH --output runme_wrn28.out
+#SBATCH --output runme_wrn28_2.out
 #SBATCH --open-mode=truncate
-#SBATCH --job-name=runme_wrn28
+#SBATCH --job-name=runme_wrn28_2
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=nathaniel.bloomfield@unimelb.edu.au
 
@@ -23,7 +23,7 @@ python main.py \
 
 python snn_eval.py \
   --model-name wide_resnet28w2 \
-  --pretrained log/cifar10_wrn28/paws-best.pth.tar \
+  --pretrained log/cifar10_wrn28_2/paws-best.pth.tar \
   --root-path datasets \
   --image-folder cifar10-data \
   --dataset-name cifar10_fine_tune \

@@ -19,7 +19,7 @@ data:
   unique_classes_per_rank: false
   unlabeled_frac: 0.995
 logging:
-  folder: log/cifar10_wrn28
+  folder: log/cifar10_wrn28_2
   write_tag: paws
 meta:
   copy_data: false
