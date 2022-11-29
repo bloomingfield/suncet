@@ -4,7 +4,8 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 #
-
+import numpy as np
+import random
 import os
 
 # -- FOR DISTRIBUTED TRAINING ENSURE ONLY 1 DEVICE VISIBLE PER PROCESS
@@ -446,6 +447,12 @@ def init_model(
             hidden_dim *= 4
         if model_name == 'resnet18':
             hidden_dim = 512
+
+    init_seed = 0
+    torch.manual_seed(init_seed)
+    np.random.seed(init_seed)
+    random.seed(init_seed)
+    torch.cuda.manual_seed_all(init_seed)
 
     # -- projection head
     encoder.fc = torch.nn.Sequential(OrderedDict([

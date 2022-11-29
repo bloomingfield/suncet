@@ -29,7 +29,7 @@ from pdb import set_trace as pb
 
 _GLOBAL_SEED = 0
 logger = getLogger()
-NUM_WORKERS = 6 # 6
+NUM_WORKERS = 0 # 6
 
 
 def transform_seed(x, seed=False):
@@ -232,6 +232,7 @@ def _init_cifar10_data(
     unsupervised_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset=unsupervised_set,
         num_replicas=world_size,
+        seed=_GLOBAL_SEED,
         rank=rank)
     unsupervised_loader = torch.utils.data.DataLoader(
         unsupervised_set,
@@ -603,13 +604,17 @@ def _make_imgnt_transforms(
     if training and (not force_center_crop):
         if basic:
             transform = transforms.Compose(
-                [transforms.RandomResizedCrop(size=224, scale=scale),
+                [
+                 transforms.Lambda(transform_seed),
+                 transforms.RandomResizedCrop(size=224, scale=scale),
                  transforms.RandomHorizontalFlip(),
                  transforms.ToTensor()])
         else:
             logger.debug('making training (non-basic) transforms')
             transform = transforms.Compose(
-                [transforms.RandomResizedCrop(size=224, scale=scale),
+                [
+                 transforms.Lambda(transform_seed),
+                 transforms.RandomResizedCrop(size=224, scale=scale),
                  transforms.RandomHorizontalFlip(),
                  get_color_distortion(s=color_distortion),
                  GaussianBlur(p=0.5),
@@ -635,15 +640,22 @@ def _make_imgnt_transforms(
         new_targets, new_samples = [], []
         if training and (keep_file is not None) and os.path.exists(keep_file):
             logger.info(f'Using {keep_file}')
+            indx_list = []
             with open(keep_file, 'r') as rfile:
                 for line in rfile:
-                    class_name = line.split('_')[0]
-                    target = class_to_idx[class_name]
                     img = line.split('\n')[0]
+                    indx_list.append(img)
+                    target = samples[int(img)][1]
+                    img = samples[int(img)][0]
                     new_samples.append(
-                        (os.path.join(root, class_name, img),
+                        (img,
                          target))
                     new_targets.append(target)
+
+            indx_list = np.array(indx_list).astype(int)
+            srt = np.argsort(indx_list)
+            new_targets = [new_targets[srt[i]] for i in srt]
+            new_samples = [new_samples[srt[i]] for i in srt]
         else:
             logger.info('flipping coin to keep labels')
             g = torch.Generator()
@@ -739,7 +751,9 @@ def _make_multicrop_imgnt_transforms(
 
     logger.debug('making multicrop transforms')
     transform = transforms.Compose(
-        [transforms.RandomResizedCrop(size=size, scale=scale),
+        [
+         transforms.Lambda(transform_seed),
+         transforms.RandomResizedCrop(size=size, scale=scale),
          transforms.RandomHorizontalFlip(),
          get_color_distortion(s=color_distortion),
          GaussianBlur(p=0.5),
@@ -926,7 +940,7 @@ class ImageNet(torchvision.datasets.ImageFolder):
         :param copy_data: whether to copy data from network file locally
         """
 
-        suffix = 'train/' if train else 'val/'
+        suffix = 'train/' if train else 'val2/'
         data_path = None
         if copy_data:
             logger.info('copying data locally')
@@ -1015,7 +1029,6 @@ class TransImageNet(ImageNet):
                     return img_1, img_2, *mc_imgs, target
 
                 return img_1, img_2, target
-
         return img, target
 
 
