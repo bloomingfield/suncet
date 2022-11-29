@@ -283,6 +283,7 @@ def main(args):
                 finally:
                     labels = torch.cat([labels_matrix for _ in range(supervised_views)])
                     simgs = [s.to(device, non_blocking=True) for s in sdata[:-1]]
+                pb()
                 # -- concatenate supervised imgs and unsupervised imgs
                 imgs = simgs + uimgs
                 return imgs, labels
