@@ -29,14 +29,14 @@ from pdb import set_trace as pb
 
 _GLOBAL_SEED = 0
 logger = getLogger()
-NUM_WORKERS = 0 # 6
+NUM_WORKERS = 6 # 6
 
 
 def transform_seed(x, seed=False):
     torch.manual_seed(0)
     np.random.seed(0)
     random.seed(0)
-    # torch.cuda.manual_seed_all(0)
+    torch.cuda.manual_seed_all(0)
     return x
 
 
@@ -755,6 +755,7 @@ def _make_multicrop_imgnt_transforms(
     transform = transforms.Compose(
         [
          transforms.Lambda(transform_seed),
+         # transforms.CenterCrop(size=96),
          transforms.RandomResizedCrop(size=size, scale=scale),
          transforms.RandomHorizontalFlip(),
          get_color_distortion(s=color_distortion),
