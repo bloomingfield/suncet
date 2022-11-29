@@ -614,6 +614,7 @@ def _make_imgnt_transforms(
             transform = transforms.Compose(
                 [
                  transforms.Lambda(transform_seed),
+                 # transforms.CenterCrop(size=224),
                  transforms.RandomResizedCrop(size=224, scale=scale),
                  transforms.RandomHorizontalFlip(),
                  get_color_distortion(s=color_distortion),
@@ -645,17 +646,18 @@ def _make_imgnt_transforms(
                 for line in rfile:
                     img = line.split('\n')[0]
                     indx_list.append(img)
-                    target = samples[int(img)][1]
-                    img = samples[int(img)][0]
-                    new_samples.append(
-                        (img,
-                         target))
-                    new_targets.append(target)
 
             indx_list = np.array(indx_list).astype(int)
-            srt = np.argsort(indx_list)
-            new_targets = [new_targets[srt[i]] for i in srt]
-            new_samples = [new_samples[srt[i]] for i in srt]
+            indx_list.sort()
+            file_list = []
+
+            for index in indx_list:
+                target = samples[index][1]
+                img = samples[index][0]
+                file_list.append(img)
+                new_samples.append((img,target))
+                new_targets.append(target)
+
         else:
             logger.info('flipping coin to keep labels')
             g = torch.Generator()
